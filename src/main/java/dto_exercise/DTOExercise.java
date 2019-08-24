@@ -1,6 +1,9 @@
 package dto_exercise;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DTOExercise {
 
@@ -10,7 +13,10 @@ public class DTOExercise {
      */
 
     public static List<PersonDTO> calculateAgesAndTransform(List<Person> people) {
-        // TODO: Use your imagination and implement what is needed.
-        return null;
+        return people.stream().map(person -> {
+            LocalDate birthDate = LocalDate.parse(person.getDateOfBirth(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            int age = birthDate.until(LocalDate.now()).getYears();
+            return new PersonDTO(person.getName(), age);
+        }).collect(Collectors.toList());
     }
 }
