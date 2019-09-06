@@ -3,6 +3,7 @@ package birthdates_exercise;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.TextStyle;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
 
@@ -28,40 +29,22 @@ public class BirthDatesExercise {
      "Hello! My name is Thiss, I am 27 years old, and I was born on Friday!"
      */
 
-    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
     public static void printSortedPeopleInfo(List<Person> people) {
         people.stream()
-                .sorted(BirthDatesExercise::comparePeopleByBirthDate)
-                .forEach(BirthDatesExercise::printPersonInfo);
+                .sorted(Comparator.comparing(BirthDatesExercise::extractBirthDate))
+                .forEach(BirthDatesExercise::printInfo);
     }
 
-    private static int comparePeopleByBirthDate(Person a, Person b) {
-        LocalDate dateA = LocalDate
-                .parse(a.getDateOfBirth(), formatter);
-
-        LocalDate dateB = LocalDate
-                .parse(b.getDateOfBirth(), formatter);
-
-        return dateA.compareTo(dateB);
+    private static LocalDate extractBirthDate(Person x) {
+        return LocalDate.parse(x.getDateOfBirth(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
 
-    private static void printPersonInfo(Person person) {
-        LocalDate birthDate = LocalDate
-                .parse(person.getDateOfBirth(), formatter);
-
-        String dayOfBirth = birthDate
-                .getDayOfWeek()
-                .getDisplayName(TextStyle.FULL, Locale.ENGLISH);
-
-        int age = birthDate
-                .until(LocalDate.now())
-                .getYears();
+    private static void printInfo(Person x) {
+        LocalDate birthDate = extractBirthDate(x);
 
         System.out.printf("Hello! My name is %s, I am %s years old, and I was born on %s!%n",
-                person.getName(),
-                age,
-                dayOfBirth
-        );
+                x.getName(),
+                birthDate.until(LocalDate.now()).getYears(),
+                birthDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.ENGLISH));
     }
 }

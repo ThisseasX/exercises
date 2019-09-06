@@ -13,10 +13,13 @@ public class DTOExercise {
      */
 
     public static List<PersonDTO> calculateAgesAndTransform(List<Person> people) {
-        return people.stream().map(person -> {
-            LocalDate birthDate = LocalDate.parse(person.getDateOfBirth(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            int age = birthDate.until(LocalDate.now()).getYears();
-            return new PersonDTO(person.getName(), age);
-        }).collect(Collectors.toList());
+        return people.stream()
+                .map(DTOExercise::mapToDTO)
+                .collect(Collectors.toList());
+    }
+
+    private static PersonDTO mapToDTO(Person x) {
+        LocalDate birthDate = LocalDate.parse(x.getDateOfBirth(), DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        return new PersonDTO(x.getName(), birthDate.until(LocalDate.now()).getYears());
     }
 }
