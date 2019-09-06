@@ -21,7 +21,7 @@ public class BirthDatesExercise {
      Person thiss = new Person("Thiss", "07/08/1992"):
 
      should print:
-     "Hello, I am Thiss, I am 27 years old and I was born on a Friday"
+     "Hello! My name is Thiss, I am 27 years old, and I was born on Friday!"
      */
 
     public static void printSortedPeopleInfo(List<Person> people) {
